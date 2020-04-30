@@ -18,6 +18,7 @@ def add_game():
 			publisher = payload["publisher"],
 			added_by = current_user.id)
 		new_game_dict = model_to_dict(new_game)
+		new_game_dict["added_by"].pop("password")
 		return jsonify(
 			data = new_game_dict,
 			message = "Game added",
