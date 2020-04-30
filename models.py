@@ -9,7 +9,7 @@ class Account(UserMixin, Model):
 	email = CharField(unique=True)
 	password = CharField()
 	role = CharField() 
-	bio = CharField()
+	bio = CharField(default="")
 
 	class Meta:
 		database = DATABASE

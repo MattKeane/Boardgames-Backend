@@ -21,7 +21,7 @@ def register_user():
 	payload["username"] = payload["username"].lower()
 
 	try:
-		models.User.get(models.User.email == payload["email"])
+		models.Account.get(models.Account.email == payload["email"])
 		return jsonify(
 			data = {},
 			message = f"Account with e-mail {payload['email']} already exists",
@@ -30,7 +30,7 @@ def register_user():
 
 	except models.DoesNotExist:
 		try:
-			models.User.get(models.User.username == payload["username"])
+			models.Account.get(models.Account.username == payload["username"])
 			return jsonify(
 				data = {},
 				message = f"Username {payload['username']} already taken",
@@ -39,10 +39,11 @@ def register_user():
 
 		except models.DoesNotExist:
 			hashed_password = generate_password_hash(payload["password"])
-			new_user = models.User.create(
+			new_user = models.Account.create(
 				username = payload["username"],
 				email = payload["email"],
-				password = hashed_password
+				password = hashed_password,
+				role = payload["role"]
 			)
 
 			login_user(new_user)
@@ -64,7 +65,7 @@ def login():
 	payload = request.get_json()
 	payload["email"] = payload["email"].lower()
 	try:
-		user = models.User.get(models.User.email == payload["email"])
+		user = models.Account.get(models.Account.email == payload["email"])
 		user_dict = model_to_dict(user)
 		password_is_correct = check_password_hash(user_dict["password"], payload["password"])
 		if password_is_correct:
