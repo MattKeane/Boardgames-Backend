@@ -9,16 +9,15 @@ games = Blueprint("games", "games")
 
 @games.route("/", methods=["POST"])
 def add_game():
-	if current_user.is_authenticated:
+	if current_user.is_authenticated and current_user.role == "publisher":
 		payload = request.get_json()
 		new_game = models.Game.create(
 			title = payload["title"],
 			min_players = payload["min_players"],
 			max_players = payload["max_players"],
-			publisher = payload["publisher"],
-			added_by = current_user.id)
+			publisher = current_user.id)
 		new_game_dict = model_to_dict(new_game)
-		new_game_dict["added_by"].pop("password")
+		new_game_dict["publisher"].pop("password")
 		return jsonify(
 			data = new_game_dict,
 			message = "Game added",
@@ -28,7 +27,7 @@ def add_game():
 	else:
 		return jsonify(
 			data = {},
-			message = "User must be logged in to add a game",
+			message = "Publisher must be logged in to add a game",
 			status = 401
 		), 401
 
