@@ -2,7 +2,7 @@ import models
 from flask import Blueprint, request, jsonify
 from playhouse.shortcuts import model_to_dict
 from flask_bcrypt import generate_password_hash
-from flask_login import login_user
+from flask_login import login_user, current_user
 
 users = Blueprint( "users", "users")
 
@@ -52,3 +52,25 @@ def register_user():
 				message = f"Successfully registered {new_user_dict['username']}",
 				status = 201
 			), 201
+
+@users.route("/logged_in_user", methods=["GET"])
+def get_logged_in_user():
+	if not current_user.is_authenticated:
+		return jsonify(
+			data = {},
+			message = "No user is currently logged in",
+			status = 401
+		), 401
+
+	else:
+		user_dict = model_to_dict(current_user)
+		user_dict.pop("password")
+		return jsonify(
+			data = user_dict,
+			message = f"{user_dict['username']} currently logged in.",
+			status = 200
+		), 200
+
+
+
+
