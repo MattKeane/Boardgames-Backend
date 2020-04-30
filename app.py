@@ -7,6 +7,7 @@ import models
 
 # blueprints
 from resources.users import users
+from resources.games import games
 
 DEBUG=True
 PORT=8000
@@ -32,6 +33,7 @@ def test():
 
 # define routes
 app.register_blueprint(users, url_prefix = "/api/v1/users")
+app.register_blueprint(games, url_prefix = "/api/v1/games")
 
 if __name__ == "__main__":
 	models.initialize()
