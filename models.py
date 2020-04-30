@@ -4,7 +4,7 @@ DATABASE = SqliteDatabase("games.sqlite")
 
 # define models
 
-class User(UserMixin, Model):
+class Account(UserMixin, Model):
 	username = CharField(unique=True)
 	email = CharField(unique=True)
 	password = CharField()
@@ -18,7 +18,7 @@ class Game(Model):
 	title = CharField()
 	max_players = IntegerField()
 	min_players = IntegerField()
-	publisher = ForeignKeyField(User, backref="games")
+	publisher = ForeignKeyField(Account, backref="games")
 
 	class Meta:
 		database = DATABASE
@@ -38,8 +38,8 @@ class GameGenreRelationship(Model):
 		database = DATABASE
 
 class Favorite(Model):
-	user = ForeignKeyField(User, backref="favorites")
-	game = ForeignKeyField(User, backref="favorites")
+	user = ForeignKeyField(Account, backref="favorites")
+	game = ForeignKeyField(Game, backref="favorites")
 
 	class Meta:
 		database = DATABASE
@@ -48,6 +48,6 @@ class Favorite(Model):
 
 def initialize():
 	DATABASE.connect()
-	DATABASE.create_tables([User, Game, Genre, GameGenreRelationship, Favorite], safe=True)
+	DATABASE.create_tables([Account, Game, Genre, GameGenreRelationship, Favorite], safe=True)
 	print("Connected to DB and tables created")
 	DATABASE.close()

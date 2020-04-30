@@ -4,17 +4,17 @@ from playhouse.shortcuts import model_to_dict
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user, logout_user
 
-users = Blueprint( "users", "users")
+accounts = Blueprint( "accounts", "accounts")
 
 # test route
 
-@users.route("/", methods=["GET"])
+@accounts.route("/", methods=["GET"])
 def test_user_route():
 	return "user route working"
 
 # registration route
 
-@users.route("/register", methods=["POST"])
+@accounts.route("/register", methods=["POST"])
 def register_user():
 	payload = request.get_json()
 	payload["email"] = payload["email"].lower()
@@ -59,7 +59,7 @@ def register_user():
 
 # login route
 
-@users.route("/login", methods=["POST"])
+@accounts.route("/login", methods=["POST"])
 def login():
 	payload = request.get_json()
 	payload["email"] = payload["email"].lower()
@@ -92,7 +92,7 @@ def login():
 
 # check logged in user route
 
-@users.route("/logged_in_user", methods=["GET"])
+@accounts.route("/logged_in_user", methods=["GET"])
 def get_logged_in_user():
 	if not current_user.is_authenticated:
 		return jsonify(
@@ -112,7 +112,7 @@ def get_logged_in_user():
 
 # log out route
 
-@users.route("/logout", methods=["GET"])
+@accounts.route("/logout", methods=["GET"])
 def logout():
 	logout_user()
 	return jsonify(
