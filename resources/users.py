@@ -2,7 +2,7 @@ import models
 from flask import Blueprint, request, jsonify
 from playhouse.shortcuts import model_to_dict
 from flask_bcrypt import generate_password_hash
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, logout_user
 
 users = Blueprint( "users", "users")
 
@@ -70,6 +70,15 @@ def get_logged_in_user():
 			message = f"{user_dict['username']} currently logged in.",
 			status = 200
 		), 200
+
+@users.route("/logout", methods=["GET"])
+def logout():
+	logout_user()
+	return jsonify(
+		data={},
+		message="Logged out.",
+		status=200
+	), 200
 
 
 
