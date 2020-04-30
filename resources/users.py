@@ -42,6 +42,8 @@ def register_user():
 
 			new_user_dict = model_to_dict(new_user)
 
+			new_user_dict.pop("password")
+
 			return jsonify(
 				data = new_user_dict,
 				message = f"Successfully registered {new_user_dict['username']}",
