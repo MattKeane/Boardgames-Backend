@@ -6,9 +6,13 @@ from flask_login import login_user, current_user, logout_user
 
 users = Blueprint( "users", "users")
 
+# test route
+
 @users.route("/", methods=["GET"])
 def test_user_route():
 	return "user route working"
+
+# registration route
 
 @users.route("/register", methods=["POST"])
 def register_user():
@@ -53,6 +57,8 @@ def register_user():
 				status = 201
 			), 201
 
+# login route
+
 @users.route("/login", methods=["POST"])
 def login():
 	payload = request.get_json()
@@ -84,6 +90,8 @@ def login():
 			status = 401
 		), 401
 
+# check logged in user route
+
 @users.route("/logged_in_user", methods=["GET"])
 def get_logged_in_user():
 	if not current_user.is_authenticated:
@@ -101,6 +109,8 @@ def get_logged_in_user():
 			message = f"{user_dict['username']} currently logged in.",
 			status = 200
 		), 200
+
+# log out route
 
 @users.route("/logout", methods=["GET"])
 def logout():
