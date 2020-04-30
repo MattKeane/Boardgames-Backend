@@ -6,6 +6,6 @@
 
 ## Route Structure
 
-![Route Structure](https://i.imgur.com/cYaj81q.png)
+![Route Structure](https://i.imgur.com/Bm8Bcne.png)
 
 Stretch goal: add routes to allow users to search by genre.
