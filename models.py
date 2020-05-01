@@ -31,7 +31,7 @@ class Genre(Model):
 		database = DATABASE
 
 class GameGenreRelationship(Model):
-	game = ForeignKeyField(Game, backref="game_genre_relationships")
+	game = ForeignKeyField(Game, backref="game_genre_relationships",)
 	genre = ForeignKeyField(Genre, backref="game_genre_relationships")
 
 	class Meta:

@@ -50,6 +50,27 @@ def games_index():
 		message = f"Returned {len(all_games)} games",
 		status = 200
 	), 200
+
+# delete route
+
+@games.route("/<id>", methods=["DELETE"])
+@login_required
+# @publishers_only
+def delete_game(id):
+	game_to_delete = models.Game.get_by_id(id)
+	if game_to_delete.publisher.id == current_user.id:
+		game_to_delete.delete_instance()
+		return jsonify(
+			data = {},
+			message = "Game Deleted",
+			status = 200
+		), 200
+	else:
+		return jsonify(
+			data = {},
+			message = "Forbidden. Games can only be deleted by their publisher.",
+			status = 403
+		), 403
 		
 
 
