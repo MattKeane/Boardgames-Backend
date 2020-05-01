@@ -35,7 +35,21 @@ def add_game():
 		data = new_game_dict,
 		message = "Game added",
 		status = 201
-	), 201		
+	), 201	
+
+# index route
+
+@games.route("/", methods=["GET"])
+def games_index():
+	query_results = models.Game.select()
+	all_games = [model_to_dict(game_model) for game_model in query_results]
+	for game_dict in all_games:
+		game_dict["publisher"].pop("password")
+	return jsonify(
+		data = all_games,
+		message = f"Returned {len(all_games)} games",
+		status = 200
+	), 200
 		
 
 
