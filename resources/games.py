@@ -59,6 +59,7 @@ def games_index():
 def delete_game(id):
 	game_to_delete = models.Game.get_by_id(id)
 	if game_to_delete.publisher.id == current_user.id:
+		models.GameGenreRelationship.delete().where(models.GameGenreRelationship.game.id == game_to_delete.id)
 		game_to_delete.delete_instance()
 		return jsonify(
 			data = {},
