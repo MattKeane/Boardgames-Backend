@@ -7,9 +7,13 @@ from decorators import publishers_only
 
 genres = Blueprint("genres", "genres")
 
+# test route
+
 @genres.route("/test", methods=["GET"])
 def genres_test():
 	return "Genres route connected and functioning"
+
+# create route
 
 @genres.route("/", methods=["POST"])
 @login_required
@@ -33,3 +37,15 @@ def add_genre():
 			message = f"Genre {payload['name']} created",
 			status = 201
 		), 201
+
+# index route
+
+@genres.route("/", methods=["GET"])
+def genres_index():
+	query_result = models.Genre.select()
+	all_genres = [model_to_dict(genre_model) for genre_model in query_result]
+	return jsonify(
+		data = all_genres,
+		message = f"Returned {len(all_genres)} genres",
+		status = 200
+	), 200
