@@ -8,6 +8,7 @@ import models
 # blueprints
 from resources.accounts import accounts
 from resources.games import games
+from resources.genres import genres
 
 DEBUG=True
 PORT=8000
@@ -34,6 +35,7 @@ def test():
 # define routes
 app.register_blueprint(accounts, url_prefix = "/api/v1/accounts")
 app.register_blueprint(games, url_prefix = "/api/v1/games")
+app.register_blueprint(genres, url_prefix = "/api/v1/genres")
 # app.register_blueprint(genres, url_prefix = "/api/v1/genres")
 
 if __name__ == "__main__":
