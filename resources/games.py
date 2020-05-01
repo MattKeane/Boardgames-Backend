@@ -9,7 +9,7 @@ games = Blueprint("games", "games")
 # create route
 
 @games.route("/", methods=["POST"])
-# @login_required
+@login_required
 @publishers_only
 def add_game():
 	payload = request.get_json()
@@ -19,6 +19,17 @@ def add_game():
 		max_players = payload["max_players"],
 		publisher = current_user.id)
 	new_game_dict = model_to_dict(new_game)
+	for i in payload["genres"]:
+		try:
+			genre_to_add = models.Genre.get(models.Genre.name == i)
+		except models.DoesNotExist:
+			genre_to_add = models.Genre.create(
+				name = i,
+				description = "")
+		genre_to_add_dict = model_to_dict(genre_to_add)
+		models.GameGenreRelationship.create(
+			game = new_game_dict["id"],
+			genre = genre_to_add_dict["id"])
 	new_game_dict["publisher"].pop("password")
 	return jsonify(
 		data = new_game_dict,
