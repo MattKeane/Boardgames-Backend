@@ -110,6 +110,7 @@ def update_game(id):
 		game_to_update.max_players = payload["max_players"]
 		game_to_update.save()
 		game_dict = model_to_dict(game_to_update)
+		games_dict["publisher"].pop("password")
 		return jsonify(
 			data = game_dict,
 			message = f"{game_dict['title']} updated",
