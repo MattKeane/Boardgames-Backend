@@ -32,15 +32,15 @@ class Genre(Model):
 		database = DATABASE
 
 class GameGenreRelationship(Model):
-	game = ForeignKeyField(Game, backref="game_genre_relationships",)
-	genre = ForeignKeyField(Genre, backref="game_genre_relationships")
+	game = ForeignKeyField(Game, backref="game_genre_relationships", on_delete="CASCADE")
+	genre = ForeignKeyField(Genre, backref="game_genre_relationships", on_delete="CASCADE")
 
 	class Meta:
 		database = DATABASE
 
 class Favorite(Model):
-	user = ForeignKeyField(Account, backref="favorites")
-	game = ForeignKeyField(Game, backref="favorites")
+	user = ForeignKeyField(Account, backref="favorites", on_delete="CASCADE")
+	game = ForeignKeyField(Game, backref="favorites", on_delete="CASCADE")
 
 	class Meta:
 		database = DATABASE
