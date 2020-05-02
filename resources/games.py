@@ -135,14 +135,22 @@ def update_game(id):
 @login_required
 @users_only
 def add_favorite(id):
-	models.Favorite.create(
-		user = current_user.id,
-		game = id)
-	return jsonify(
-		data = {},
-		message = "Favorite added",
-		status = 200
-	), 200
+	try:
+		models.Favorite.get(models.Favorite.user_id == current_user.id)
+		return jsonify(
+			data = {},
+			message = "Game already added as favorite",
+			status = 401
+		), 401
+	except models.DoesNotExist:
+		models.Favorite.create(
+			user = current_user.id,
+			game = id)
+		return jsonify(
+			data = {},
+			message = "Favorite added",
+			status = 200
+		), 200
 
 
 # test route
