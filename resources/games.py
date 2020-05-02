@@ -85,13 +85,43 @@ def update_game(id):
 	game_to_update = models.Game.get_by_id(id)
 	if game_to_update.publisher.id == current_user.id:
 		payload = request.get_json()
+		genre_query = (models.GameGenreRelationship
+			.select()
+			.where(models.GameGenreRelationship.game_id == game_to_update.id))
+		relationship_list = ([model_to_dict(q) for q in genre_query])
+		existing_genres = [relationship["genre"]["name"] for relationship in relationship_list]
+		for relationship in relationship_list:
+			if relationship["genre"]["name"] not in payload["genres"]:
+				models.GameGenreRelationship.get_by_id(relationship["id"]).delete_instance()
+		for i in payload["genres"]:
+			if i not in existing_genres:
+				try:
+					genre_to_add = models.Genre.get(models.Genre.name == i)
+				except models.DoesNotExist:
+					genre_to_add = models.Genre.create(
+						name = i,
+						description = "")
+				# genre_to_add_dict = model_to_dict(genre_to_add)
+				models.GameGenreRelationship.create(
+					game = game_to_update.id,
+					genre = genre_to_add.id)
+		game_to_update.title = payload["title"]
+		game_to_update.min_players = payload["min_players"]
+		game_to_update.max_players = payload["max_players"]
+		game_to_update.save()
+		game_dict = model_to_dict(game_to_update)
+		return jsonify(
+			data = game_dict,
+			message = f"{game_dict['title']} updated",
+			status = 200
+		), 200
+
 	else:
 		return jsonify(
 			data = {},
 			message = "Forbidden. Games can only be edited by their publisher.",
 			status = 403
 		), 403
-		
 
 
 
