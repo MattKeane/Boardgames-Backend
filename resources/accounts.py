@@ -122,6 +122,18 @@ def logout():
 		status=200
 	), 200
 
+# Get favorites wrote
+
+@accounts.route("/favorites/<id>", methods=["GET"])
+def get_favorites(id):
+	favorites_query = models.Favorite.select().where(models.Favorite.user_id == id)
+	users_favorites = [model_to_dict(i)["game"] for i in favorites_query]
+	return jsonify(
+		data = users_favorites,
+		message = f"Returned {len(users_favorites)} favorite games",
+		status = 200
+	), 200
+
 
 
 
