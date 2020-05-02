@@ -44,6 +44,11 @@ def games_index():
 	query_results = models.Game.select()
 	all_games = [model_to_dict(game_model) for game_model in query_results]
 	for game_dict in all_games:
+		genre_query = (models.GameGenreRelationship
+			.select()
+			.where(models.GameGenreRelationship.game_id == game_dict["id"]))
+		genre_list = ([model_to_dict(q)["genre"] for q in genre_query])
+		game_dict["genres"] = genre_list
 		game_dict["publisher"].pop("password")
 	return jsonify(
 		data = all_games,
@@ -55,7 +60,6 @@ def games_index():
 
 @games.route("/<id>", methods=["DELETE"])
 @login_required
-# @publishers_only
 def delete_game(id):
 	game_to_delete = models.Game.get_by_id(id)
 	if game_to_delete.publisher.id == current_user.id:
@@ -70,6 +74,21 @@ def delete_game(id):
 		return jsonify(
 			data = {},
 			message = "Forbidden. Games can only be deleted by their publisher.",
+			status = 403
+		), 403
+
+# update route
+
+@games.route("/<id>", methods=["PUT"])
+@login_required
+def update_game(id):
+	game_to_update = models.Game.get_by_id(id)
+	if game_to_update.publisher.id == current_user.id:
+		payload = request.get_json()
+	else:
+		return jsonify(
+			data = {},
+			message = "Forbidden. Games can only be edited by their publisher.",
 			status = 403
 		), 403
 		

@@ -26,7 +26,7 @@ def load_user(user_id):
 		user = models.Account.get_by_id(user_id)
 		return user
 	except models.DoesNotExist:
-		return none
+		return None
 
 @app.route("/")
 def test():
