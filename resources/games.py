@@ -129,11 +129,26 @@ def update_game(id):
 			status = 403
 		), 403
 
+# add favorite route
 
+@games.route("/favorite/<id>", methods=["POST"])
+@login_required
+@users_only
+def add_favorite(id):
+	models.Favorite.create(
+		user = current_user.id,
+		game = id)
+	return jsonify(
+		data = {},
+		message = "Favorite added",
+		status = 200
+	), 200
 
 
 # test route
 
 @games.route("/test")
+@users_only
 def test():
+	print(current_user.role)
 	return "Games route working"
