@@ -109,8 +109,13 @@ def update_game(id):
 		game_to_update.min_players = payload["min_players"]
 		game_to_update.max_players = payload["max_players"]
 		game_to_update.save()
+		genre_query = (models.GameGenreRelationship
+			.select()
+			.where(models.GameGenreRelationship.game_id == game_to_update.id))
 		game_dict = model_to_dict(game_to_update)
-		games_dict["publisher"].pop("password")
+		genre_list = [model_to_dict(q)["genre"] for q in genre_query]
+		game_dict["genres"] = genre_list
+		game_dict["publisher"].pop("password")
 		return jsonify(
 			data = game_dict,
 			message = f"{game_dict['title']} updated",
