@@ -152,6 +152,26 @@ def add_favorite(id):
 			status = 200
 		), 200
 
+# delete favorite route
+
+@games.route("/favorite/<id>", methods=["DELETE"])
+@login_required
+@users_only
+def delete_favorite(id):
+	try:
+		favorite_to_delete = models.Favorite.get(models.Favorite.user_id == current_user.id)
+		favorite_to_delete.delete_instance()
+		return jsonify(
+			data = {},
+			message = "Favorite deleted",
+			status = 200
+		), 200
+	except models.DoesNotExist:
+		return jsonify(
+			data = {},
+			message = "Favorite does not exist",
+			status = 401
+		), 401
 
 # test route
 
