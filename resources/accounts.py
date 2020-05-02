@@ -128,6 +128,8 @@ def logout():
 def get_favorites(id):
 	favorites_query = models.Favorite.select().where(models.Favorite.user_id == id)
 	users_favorites = [model_to_dict(i)["game"] for i in favorites_query]
+	for i in users_favorites:
+		i["publisher"].pop("password")
 	return jsonify(
 		data = users_favorites,
 		message = f"Returned {len(users_favorites)} favorite games",
