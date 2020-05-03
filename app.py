@@ -1,6 +1,7 @@
 # modules
 from flask import Flask 
 from flask_login import LoginManager
+from flask_cors import CORS
 
 # models
 import models
@@ -32,6 +33,9 @@ def load_user(user_id):
 def test():
 	return "server is running"
 
+CORS(accounts, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(games, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(genres, origins=["http://localhost:3000"], supports_credentials=True)
 # define routes
 app.register_blueprint(accounts, url_prefix = "/api/v1/accounts")
 app.register_blueprint(games, url_prefix = "/api/v1/games")

@@ -10,7 +10,11 @@ accounts = Blueprint( "accounts", "accounts")
 
 @accounts.route("/", methods=["GET"])
 def test_user_route():
-	return "user route working"
+	return jsonify(
+		data = {},
+		message = "Route is working",
+		status = 200
+	), 200
 
 # registration route
 
