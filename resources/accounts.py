@@ -16,6 +16,16 @@ def test_user_route():
 		status = 200
 	), 200
 
+@accounts.route("/", methods=["POST"])
+def test_user_route_with_data():
+	print(request)
+	payload = request.get_json()
+	print(payload)
+	return jsonify(
+		data = {},
+		message = "Route is working",
+		status = 200
+	), 200
 # registration route
 
 @accounts.route("/register", methods=["POST"])
