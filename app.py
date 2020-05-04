@@ -1,4 +1,5 @@
 # modules
+import os
 from flask import Flask, g
 from flask_login import LoginManager
 from flask_cors import CORS
@@ -53,6 +54,10 @@ def after_request(response):
 	g.db.close()
 	return response
 
+if "ON_HEROKU" in os.environ:
+	print("\non heroku!")
+	models.initialize()
+	
 if __name__ == "__main__":
 	models.initialize()
 	app.run(debug=DEBUG, port=PORT)
