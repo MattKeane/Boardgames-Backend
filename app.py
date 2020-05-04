@@ -34,9 +34,9 @@ def load_user(user_id):
 def test():
 	return "server is running"
 
-CORS(accounts, origins=["http://localhost:3000"], supports_credentials=True)
-CORS(games, origins=["http://localhost:3000"], supports_credentials=True)
-CORS(genres, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(accounts, origins=["http://localhost:3000", "https://gamehoard.herokuapp.com"], supports_credentials=True)
+CORS(games, origins=["http://localhost:3000", "https://gamehoard.herokuapp.com"], supports_credentials=True)
+CORS(genres, origins=["http://localhost:3000", "https://gamehoard.herokuapp.com"], supports_credentials=True)
 # define routes
 app.register_blueprint(accounts, url_prefix = "/api/v1/accounts")
 app.register_blueprint(games, url_prefix = "/api/v1/games")
@@ -57,7 +57,7 @@ def after_request(response):
 if "ON_HEROKU" in os.environ:
 	print("\non heroku!")
 	models.initialize()
-	
+
 if __name__ == "__main__":
 	models.initialize()
 	app.run(debug=DEBUG, port=PORT)
