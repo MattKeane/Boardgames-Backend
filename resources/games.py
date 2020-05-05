@@ -50,6 +50,13 @@ def games_index():
 		genre_list = ([model_to_dict(q)["genre"] for q in genre_query])
 		game_dict["genres"] = genre_list
 		game_dict["publisher"].pop("password")
+		fave_query = (models.Favorite
+			.select()
+			.where(models.Favorite.game_id == game_dict["id"]))
+		faves = [model_to_dict(q)["user"] for q in fave_query]
+		for fave in faves:
+			fave.pop("password")
+		game_dict["favorites"] = faves
 	return jsonify(
 		data = all_games,
 		message = f"Returned {len(all_games)} games",
