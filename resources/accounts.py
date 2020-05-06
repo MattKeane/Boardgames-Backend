@@ -32,7 +32,7 @@ def test_user_route_with_data():
 def register_user():
 	payload = request.get_json()
 	payload["email"] = payload["email"].lower()
-	payload["username"] = payload["username"].lower()
+	payload["username"] = payload["username"]
 
 	try:
 		models.Account.get(models.Account.email == payload["email"])
