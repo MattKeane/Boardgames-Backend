@@ -169,7 +169,7 @@ def add_favorite(id):
 @users_only
 def delete_favorite(id):
 	try:
-		favorite_to_delete = models.Favorite.get(models.Favorite.user_id == current_user.id)
+		favorite_to_delete = models.Favorite.get(models.Favorite.user_id == current_user.id and models.Favorite.game_id == id)
 		favorite_to_delete.delete_instance()
 		return jsonify(
 			data = {},
