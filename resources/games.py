@@ -146,7 +146,11 @@ def update_game(id):
 @users_only
 def add_favorite(id):
 	try:
-		models.Favorite.get(models.Favorite.user_id == current_user.id and models.Favorite.game_id == id)
+		favorite_to_add = (models.Favorite
+			.get((models.Favorite.user_id == current_user.id) & (models.Favorite.game_id == id)))
+		print(favorite_to_add.user_id)
+		print(model_to_dict(favorite_to_add))
+		print(current_user.id)
 		return jsonify(
 			data = {},
 			message = "Game already added as favorite",
@@ -169,7 +173,7 @@ def add_favorite(id):
 @users_only
 def delete_favorite(id):
 	try:
-		favorite_to_delete = models.Favorite.get(models.Favorite.user_id == current_user.id and models.Favorite.game_id == id)
+		favorite_to_delete = models.Favorite.get((models.Favorite.user_id == current_user.id ) & (models.Favorite.game_id == id))
 		favorite_to_delete.delete_instance()
 		return jsonify(
 			data = {},
