@@ -26,6 +26,7 @@ def users_only(func):
 		if current_user.role == "user":
 			return func(*args, **kwargs)
 		else:
+			print("users only")
 			return jsonify(
 				data = {},
 				message = "Action only available to registered users",

@@ -26,6 +26,7 @@ def load_user(user_id):
 	try:
 		print("Loading user:")
 		user = models.Account.get_by_id(user_id)
+		print(user)
 		return user
 	except models.DoesNotExist:
 		return None

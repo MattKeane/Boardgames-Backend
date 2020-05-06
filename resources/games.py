@@ -19,6 +19,8 @@ def add_game():
 		max_players = payload["max_players"],
 		publisher = current_user.id)
 	new_game_dict = model_to_dict(new_game)
+	new_game_dict["favorites"] = []
+	new_game_dict["genres"] = []
 	for i in payload["genres"]:
 		try:
 			genre_to_add = models.Genre.get(models.Genre.name == i)
@@ -30,6 +32,7 @@ def add_game():
 		models.GameGenreRelationship.create(
 			game = new_game_dict["id"],
 			genre = genre_to_add_dict["id"])
+		new_game_dict["genres"].append(genre_to_add_dict)
 	new_game_dict["publisher"].pop("password")
 	return jsonify(
 		data = new_game_dict,
@@ -143,7 +146,7 @@ def update_game(id):
 @users_only
 def add_favorite(id):
 	try:
-		models.Favorite.get(models.Favorite.user_id == current_user.id)
+		models.Favorite.get(models.Favorite.user_id == current_user.id and models.Favorite.game_id == id)
 		return jsonify(
 			data = {},
 			message = "Game already added as favorite",
