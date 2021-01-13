@@ -16,6 +16,10 @@ DEBUG=True
 PORT=8000
 
 app = Flask(__name__)
+app.config.update(
+  SESSION_COOKIE_SECURE=True,
+  SESSION_COOKIE_SAMESITE='None'
+)
 
 # user sessions
 app.secret_key = "k877DAFi887&*hj98"
