@@ -3,6 +3,7 @@ import os
 from flask import Flask, g
 from flask_login import LoginManager
 from flask_cors import CORS
+from dotenv import load_dotenv
 
 # models
 import models
@@ -12,8 +13,11 @@ from resources.accounts import accounts
 from resources.games import games
 from resources.genres import genres
 
-DEBUG=True
-PORT=8000
+load_dotenv()
+
+SESSION_SECRET = os.getenv('SESSION_SECRET')
+DEBUG	=	True
+PORT = 8000
 
 app = Flask(__name__)
 app.config.update(
@@ -22,7 +26,7 @@ app.config.update(
 )
 
 # user sessions
-app.secret_key = "k877DAFi887&*hj98"
+app.secret_key = SESSION_SECRET
 login_manager = LoginManager()
 login_manager.init_app(app)
 @login_manager.user_loader
