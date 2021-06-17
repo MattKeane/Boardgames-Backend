@@ -46,6 +46,14 @@ def handle_unauthorized():
 		message='You are not authorized to do that',
 		status=401), 401
 
+# 404 handler
+@app.errorhandler(404)
+def throw_404(err):
+	return jsonify(
+		data={},
+		message='404: Resource not found',
+		status=404), 404
+
 @app.route("/")
 def test():
 	return "server is running"
