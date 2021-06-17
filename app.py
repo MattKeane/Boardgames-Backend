@@ -1,6 +1,6 @@
 # modules
 import os
-from flask import Flask, g
+from flask import Flask, g, jsonify
 from flask_login import LoginManager
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -38,6 +38,13 @@ def load_user(user_id):
 		return user
 	except models.DoesNotExist:
 		return None
+
+@login_manager.unauthorized_handler
+def handle_unauthorized():
+	return jsonify(
+		data={},
+		message='You are not authorized to do that',
+		status=401), 401
 
 @app.route("/")
 def test():
