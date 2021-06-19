@@ -123,6 +123,14 @@ def update_game(id):
 			.select()
 			.where(models.GameGenreRelationship.game_id == game_to_update.id))
 		game_dict = model_to_dict(game_to_update)
+		# getting favorites for game
+		faves = (models.Account
+			.select(models.Account.id)
+			.join(models.Favorite)
+			.join(models.Game)
+			.where(models.Game.id == int(id)))
+		fave_dicts = [model_to_dict(fave) for fave in faves]
+		game_dict['favorites'] = fave_dicts
 		genre_list = [model_to_dict(q)["genre"] for q in genre_query]
 		game_dict["genres"] = genre_list
 		game_dict["publisher"].pop("password")
