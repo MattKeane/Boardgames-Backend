@@ -195,6 +195,31 @@ def delete_favorite(id):
 			status = 401
 		), 401
 
+# game search route
+
+@games.route('/search')
+def games_by_genre():
+	try:
+		genre_query = request.args.get('genre')
+		found_games = (models.Game
+			.select()
+			.join(models.GameGenreRelationship)
+			.join(models.Genre)
+			.where(models.Genre.name == genre_query))
+		game_dicts = [model_to_dict(game) for game in found_games]
+		for dict in game_dicts:
+			dict['publisher'].pop('password')
+		return jsonify(
+			data=game_dicts,
+			message=f'Found {len(game_dicts)} games',
+			status=200), 200
+	except models.DoesNotExist:
+		return jsonify(
+			data=[],
+			message='No games with that criteria found',
+			status=200
+			), 200
+
 # test route
 
 @games.route("/test")
