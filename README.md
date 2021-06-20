@@ -52,8 +52,9 @@
 | /games/                | GET    | Gets all game data  |
 | /games/add             | POST   | Creates a game      |
 | /games/update/\<id\>   | PUT    | Updates a game      |
-| /games/delete/\<id>\>  | DELETE | Deletes a game      |
+| /games/delete/\<id\>   | DELETE | Deletes a game      |
 | /games/favorite/\<id\> | POST   | Favorites a game    |
-| /games/favorite/\<id\> | Delete | Unfavorites a game  |
+| /games/favorite/\<id\> | DELETE | Unfavorites a game  |
+| /games/search?         | GET    | Search for a game (currently only accepts genre as a query parameter) |
 
 Stretch goal: add routes to allow users to search by genre.
