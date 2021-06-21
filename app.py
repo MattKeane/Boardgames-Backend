@@ -48,11 +48,18 @@ def handle_unauthorized():
 
 # 404 handler
 @app.errorhandler(404)
-def throw_404(err):
+def handle_404(err):
 	return jsonify(
 		data={},
 		message='404: Resource not found',
 		status=404), 404
+
+@app.errorhandler(405)
+def handle_405(err):
+	return jsonify(
+		data={},
+		message='405: Method not allowed',
+		status=405), 405
 
 @app.route("/")
 def test():
