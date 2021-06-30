@@ -65,9 +65,16 @@ def handle_405(err):
 def test():
 	return "server is running"
 
-CORS(accounts, origins=["http://localhost:3000", "https://gamehoard.herokuapp.com"], supports_credentials=True)
-CORS(games, origins=["http://localhost:3000", "https://gamehoard.herokuapp.com"], supports_credentials=True)
-CORS(genres, origins=["http://localhost:3000", "https://gamehoard.herokuapp.com"], supports_credentials=True)
+# allowed origins for CORS
+origins = [
+	'http://localhost:3000',
+	'https://gamehoard.herokuapp.com',
+	'http://gamehoard.herokuapp.com'
+]
+
+CORS(accounts, origins=origins, supports_credentials=True)
+CORS(games, origins=origins, supports_credentials=True)
+CORS(genres, origins=origins, supports_credentials=True)
 # define routes
 app.register_blueprint(accounts, url_prefix = "/api/v1/accounts")
 app.register_blueprint(games, url_prefix = "/api/v1/games")
