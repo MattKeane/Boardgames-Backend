@@ -3,6 +3,7 @@ from peewee import *
 from flask_login import UserMixin
 from playhouse.db_url import connect
 from flask_bcrypt import generate_password_hash
+from playhouse.shortcuts import model_to_dict
 
 if "ON_HEROKU" in os.environ:
 	DATABASE = connect(os.environ.get("DATABASE_URL"))
@@ -25,6 +26,9 @@ class Account(UserMixin, Model):
 	password = PasswordField()
 	role = CharField() 
 	bio = CharField(default="")
+
+	def to_dict(self):
+		return model_to_dict(self, exclude=[Account.password])
 
 	class Meta:
 		database = DATABASE
