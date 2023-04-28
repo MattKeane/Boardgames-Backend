@@ -77,11 +77,10 @@ def login():
 	payload["email"] = payload["email"].lower()
 	try:
 		user = models.Account.get(models.Account.email == payload["email"])
-		user_dict = model_to_dict(user)
-		password_is_correct = check_password_hash(user_dict["password"], payload["password"])
+		password_is_correct = user.check_password(payload["password"])
 		if password_is_correct:
 			login_user(user)
-			user_dict.pop("password")
+			user_dict = user.to_dict()
 			return jsonify(
 				data = user_dict,
 				message = f"{user_dict['username']} signed in.",

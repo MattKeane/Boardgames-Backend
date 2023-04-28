@@ -2,7 +2,7 @@ import os
 from peewee import *
 from flask_login import UserMixin
 from playhouse.db_url import connect
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.shortcuts import model_to_dict
 
 if "ON_HEROKU" in os.environ:
@@ -29,6 +29,9 @@ class Account(UserMixin, Model):
 
 	def to_dict(self):
 		return model_to_dict(self, exclude=[Account.password])
+
+	def check_password(self, password):
+		return check_password_hash(self.password, password)
 
 	class Meta:
 		database = DATABASE
