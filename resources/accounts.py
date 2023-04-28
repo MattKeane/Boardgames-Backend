@@ -52,11 +52,10 @@ def register_user():
 			), 401
 
 		except models.DoesNotExist:
-			hashed_password = generate_password_hash(payload["password"])
 			new_user = models.Account.create(
 				username = payload["username"],
 				email = payload["email"],
-				password = hashed_password,
+				password = payload["password"],
 				role = payload["role"]
 			)
 
